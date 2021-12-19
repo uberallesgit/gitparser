@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import lxml
+import json
 
 
 # headers = {
@@ -37,6 +38,8 @@ all_categories_dict = {}
 for item in all_product_hrefs:
     item_text = item.text
     item_href = item.get("href")
+
+    all_categories_dict[item_text] = item_href
     count+=1
     print(f"{count}-{item_text} {url + item_href}")
 
