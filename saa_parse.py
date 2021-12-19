@@ -39,9 +39,11 @@ for item in all_product_hrefs:
     item_text = item.text
     item_href = item.get("href")
 
-    all_categories_dict[item_text] = item_href
+    all_categories_dict[item_text] = url+item_href
     count+=1
-    print(f"{count}-{item_text} {url + item_href}")
+
+with open("all_categories_dict.json", "W") as file:
+    json.dump(all_categories_dict, file, indent=4, ensure_ascii=False)
 
 
 
