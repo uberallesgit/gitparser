@@ -56,10 +56,23 @@ for category_name,category_href in all_categories.items():
             if item in category_name:
                 category_name = category_name.replace(item, "_")
 
-        req = requests.get(url=category_href,headders=headers)
+        req = requests.get(url=category_href,headers=headers)
         src = req.text
         with open(f"data/{category_name}.html", "w") as file:
             file.write(src)
+
+        with open(f"data/{category_name}.html") as file:
+            src = file.read()
+
+            #собираем заголвки таблицы
+
+        soup = BeautifulSoup(src,"lxml")
+
+
+
+
+
+
         count+=1
 
 
