@@ -65,8 +65,19 @@ for category_name,category_href in all_categories.items():
             src = file.read()
 
             #собираем заголвки таблицы
+        head_name = "Наименование"
+        head_href = "Ссылка"
+        head_price = "Цена"
 
         soup = BeautifulSoup(src,"lxml")
+
+        names = soup.find_all("h2", class_="catItemTitle")
+        names_count = 0
+
+        for name in names:
+            print(names_count,name.text.strip())
+            names_count+=1
+
 
 
 
