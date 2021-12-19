@@ -42,7 +42,7 @@ for item in all_product_hrefs:
     all_categories_dict[item_text] = url+item_href
     count+=1
 
-with open("all_categories_dict.json", "W") as file:
+with open("all_categories_dict.json", "w") as file:
     json.dump(all_categories_dict, file, indent=4, ensure_ascii=False)
 
 
