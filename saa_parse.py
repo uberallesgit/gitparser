@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import lxml
 import json
+import csv
 
 
 headers = {
@@ -80,9 +81,45 @@ for category_name,category_href in all_categories.items():
         names = soup.find_all("h2", class_="catItemTitle")
         names_count = 0
 
-        for name in names:
-            print(names_count,name.text.strip())
-            names_count+=1
+        # for name in names:
+        #     print(names_count,name.text.strip())
+        #     names_count+=1
+
+        with open(f"data/{count}_{category_name}.csv","w",encoding="utf-8") as file:
+            writer = csv.writer(file)
+            writer.writerow(
+                (
+                    head_name,
+                    head_price,
+                    head_href
+
+                )
+            )
+
+        # собираем данные продуктов
+        furniture = soup.find_all("h2",class_="catItemTitle")
+        prices = soup.find_all("div",class_="catItemPrice")
+
+        fur_list = []
+        price_list = []
+        price_dict = {}
+        county = 0
+        for item in furniture:
+            # print(item.text.strip())
+            fur_list.append(item.text.strip())
+
+        for price in prices:
+            # print(price.text)
+            price_list.append(price.text)
+            price_dict[fur_list[county]]=price_list[county]
+            county+=1
+        print(price_dict)
+
+
+
+
+
+        count += 1
 
 
 
@@ -90,7 +127,10 @@ for category_name,category_href in all_categories.items():
 
 
 
-        count+=1
+
+
+
+
 
 
 
