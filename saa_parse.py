@@ -9,7 +9,7 @@ headers = {
 "User-Agent" :"Mozilla/5.0 (X11; Linux x86_64; rv:95.0) Gecko/20100101 Firefox/95.0"
 }
 url = "http://mebel-saa.ru"
-#
+# #
 # req = requests.get(url,headers=headers)
 # src = req.text
 # print(src)
@@ -28,19 +28,25 @@ url = "http://mebel-saa.ru"
 # # for item in all_hrefs:
 #     # print(count,item.text)
 #
-# all_product_hrefs = all_hrefs[5:43]
+# all_product_hrefs = all_hrefs[5:22]
 # all_products_links = []
 # all_product_images = []
+#
+#
 # count = 0
 #
 # all_categories_dict = {}
 #
 # for item in all_product_hrefs:
+#     print(count,item)
 #     item_text = item.text
 #     item_href = item.get("href")
 #
 #     all_categories_dict[item_text] = url+item_href
-#     count+=1
+#     count += 1
+#
+#     #Создаём json файл
+#
 #
 # with open("all_categories_dict.json", "w") as file:
 #     json.dump(all_categories_dict, file, indent=4, ensure_ascii=False)
