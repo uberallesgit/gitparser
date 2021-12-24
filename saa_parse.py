@@ -71,12 +71,14 @@ for category_name,category_href in all_categories.items():
     with open(f"data/{category_name}.html") as file:
         src = file.read()
 
+    soup = BeautifulSoup(src,"lxml")
+
         #собираем заголвки таблицы
     head_name = "Наименование"
     head_href = "Ссылка"
     head_price = "Цена"
 
-    soup = BeautifulSoup(src,"lxml")
+
 
     names = soup.find_all("h2", class_="catItemTitle")
     names_count = 0
@@ -98,20 +100,25 @@ for category_name,category_href in all_categories.items():
 
     # собираем данные продуктов
     furniture = soup.find_all("h2",class_="catItemTitle")
-    prices = soup.find("div", id="itemListLeading").find_all("div",class_="catItemPrice")
+    prices = soup.find("div", id="itemListLeading").find_all("div", class_="catItemPrice")
+    prices_count = 0
+    for item in prices:
+        prices_count+=1
+        # print(prices_count)
+
     links = soup.find("div", id="itemListLeading").find_all("a")
     # print(links)
     fur_list = []
     price_list = []
     link_list = []
     county = 0
-    while county <15:
+    while county < prices_count:
         for item in furniture:
             # print(item.text.strip())
             fur_list.append(item.text.strip())
 
         for price in prices:
-            print(county,price.text)
+            #
             price = price.text
             price_list.append(price)
 
@@ -149,6 +156,8 @@ for category_name,category_href in all_categories.items():
 
 
     count += 1
+
+print(f"Парсинг сайта окончен! Вся необходимая информация находится в папке data")
 
 
 
