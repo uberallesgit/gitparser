@@ -57,69 +57,98 @@ with open("all_categories_dict.json") as file:
 
 count = 0
 for category_name,category_href in all_categories.items():
-    if count ==0:
-        rep = [","," ","-"]
-        for item in rep:
-            if item in category_name:
-                category_name = category_name.replace(item, "_")
 
-        req = requests.get(url=category_href,headers=headers)
-        src = req.text
-        with open(f"data/{category_name}.html", "w") as file:
-            file.write(src)
+    rep = [","," ","-"]
+    for item in rep:
+        if item in category_name:
+            category_name = category_name.replace(item, "_")
 
-        with open(f"data/{category_name}.html") as file:
-            src = file.read()
+    req = requests.get(url=category_href,headers=headers)
+    src = req.text
+    with open(f"data/{category_name}.html", "w") as file:
+        file.write(src)
 
-            #собираем заголвки таблицы
-        head_name = "Наименование"
-        head_href = "Ссылка"
-        head_price = "Цена"
+    with open(f"data/{category_name}.html") as file:
+        src = file.read()
 
-        soup = BeautifulSoup(src,"lxml")
+        #собираем заголвки таблицы
+    head_name = "Наименование"
+    head_href = "Ссылка"
+    head_price = "Цена"
 
-        names = soup.find_all("h2", class_="catItemTitle")
-        names_count = 0
+    soup = BeautifulSoup(src,"lxml")
 
-        # for name in names:
-        #     print(names_count,name.text.strip())
-        #     names_count+=1
+    names = soup.find_all("h2", class_="catItemTitle")
+    names_count = 0
 
-        with open(f"data/{count}_{category_name}.csv","w",encoding="utf-8") as file:
-            writer = csv.writer(file)
-            writer.writerow(
-                (
-                    head_name,
-                    head_price,
-                    head_href
+    # for name in names:
+    #     print(names_count,name.text.strip())
+    #     names_count+=1
 
-                )
+    with open(f"data/{count}_{category_name}.csv","w",encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(
+            (
+                head_name,
+                head_price,
+                head_href
+
             )
+        )
 
-        # собираем данные продуктов
-        furniture = soup.find_all("h2",class_="catItemTitle")
-        prices = soup.find_all("div",class_="catItemPrice")
-
-        fur_list = []
-        price_list = []
-        price_dict = {}
-        county = 0
+    # собираем данные продуктов
+    furniture = soup.find_all("h2",class_="catItemTitle")
+    prices = soup.find("div", id="itemListLeading").find_all("div",class_="catItemPrice")
+    links = soup.find("div", id="itemListLeading").find_all("a")
+    # print(links)
+    fur_list = []
+    price_list = []
+    link_list = []
+    county = 0
+    while county <15:
         for item in furniture:
             # print(item.text.strip())
             fur_list.append(item.text.strip())
 
         for price in prices:
-            # print(price.text)
-            price_list.append(price.text)
-            price_dict[fur_list[county]]=price_list[county]
-            county+=1
-        print(price_dict)
+            print(county,price.text)
+            price = price.text
+            price_list.append(price)
+
+
+
+        link_count = 0
+        for link in links:
+            link = url+link.get("href")
+            if link_count % 3 == 0:
+                link_list.append(link)
+            link_count +=1
+
+
+
+
+        with open(f"data/{count}_{category_name}.csv", "a", encoding="utf-8")as file:
+            writer = csv.writer(file)
+            writer.writerow(
+                (
+                    fur_list[county],
+                    price_list[county],
+                    link_list[county]
+                )
+            )
+
+        county += 1
+    # print(link_list)
+
+
+
+    # print(link_list)
 
 
 
 
 
-        count += 1
+    count += 1
 
 
 
